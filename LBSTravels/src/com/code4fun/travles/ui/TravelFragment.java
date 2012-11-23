@@ -1,13 +1,16 @@
 package com.code4fun.travles.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.code4fun.travles.R;
+import com.code4fun.travles.TravelsLineActivity;
 import com.code4fun.travles.model.TravelIntroduction;
 
 /**
@@ -26,6 +29,13 @@ public class TravelFragment extends Fragment {
         final View v = inflater.inflate(R.layout.travel_fragment, container, false);
         title = (TextView) v.findViewById(R.id.titleText);
         description = (TextView) v.findViewById(R.id.description);
+        v.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), TravelsLineActivity.class));
+            }
+        });
         return v;
     }
 

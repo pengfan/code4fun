@@ -17,9 +17,18 @@ public class TravelIntroduction {
     private String author;
     private Date recordTime;
     private String introduction;
+    private String id;
 
     public TravelIntroduction() {
         line = new ArrayList<MapPoint>();
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public void setLine(List<MapPoint> line) {

@@ -1,5 +1,7 @@
 package com.code4fun.travles;
 
+import java.util.Stack;
+
 import android.app.Application;
 import android.util.Log;
 import android.widget.Toast;
@@ -18,10 +20,11 @@ public class MyApplication extends Application {
 
     public static MyApplication instance;
     public BMapManager mBMapMan = null;
-    String mStrKey = "41C407C88F3A6839FD45B913C8213F21C6E72A08";
+    public static String mStrKey = "41C407C88F3A6839FD45B913C8213F21C6E72A08";
     boolean m_bKeyRight = true;
+    private Stack<Object> stack;
 
-    static class MyGeneralListener implements MKGeneralListener {
+    public static class MyGeneralListener implements MKGeneralListener {
         @Override
         public void onGetNetworkState(int iError) {
             Log.w("MyGeneralListener", "onGetNetworkState error is " + iError);
@@ -37,6 +40,14 @@ public class MyApplication extends Application {
         }
     }
 
+    public Object pop() {
+        return stack.pop();
+    }
+
+    public void push(Object obj) {
+        stack.push(obj);
+    }
+
     @Override
     public void onCreate() {
         Log.v("SophiaApplication", "onCreate");
@@ -44,6 +55,7 @@ public class MyApplication extends Application {
         mBMapMan = new BMapManager(this);
         mBMapMan.init(this.mStrKey, new MyGeneralListener());
         mBMapMan.getLocationManager().setNotifyInternal(10, 5);
+        stack = new Stack<Object>();
         super.onCreate();
     }
 
