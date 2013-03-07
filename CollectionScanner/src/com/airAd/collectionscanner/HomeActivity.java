@@ -10,9 +10,14 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.airAd.collectionscanner.data.Card;
 import com.airAd.collectionscanner.data.CardDataSource;
+import com.airAd.collectionscanner.net.Response;
+import com.airAd.collectionscanner.service.CardSynService;
+import com.airAd.collectionscanner.worker.NetWorker;
+import com.airAd.collectionscanner.worker.NetWorkerHandler;
 import com.google.zxing.client.android.CaptureActivity;
 
 public class HomeActivity extends BaseActivity {
@@ -22,6 +27,7 @@ public class HomeActivity extends BaseActivity {
     private CardDataSource dataSource;
     private List<Card> cardList = new ArrayList<Card>();
     private StartAdapter adapter;
+    private NetWorker networker;
     
     public static final int SCAN_SEAL = 1000;
 
@@ -29,6 +35,7 @@ public class HomeActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
+        networker = new NetWorker(this);
         textView = findView(R.id.card_show);
         listView = findView(R.id.stat_show);
         adapter = new StartAdapter();
@@ -45,6 +52,32 @@ public class HomeActivity extends BaseActivity {
         adapter.notifyDataSetChanged();
         listView.setVisibility(View.VISIBLE);
         textView.setVisibility(View.GONE);
+    }
+    
+    public void sync(View view) {
+        List<Card> cardList = dataSource.query();
+        CardSynService service = new CardSynService();
+        service.setSynList(cardList);
+        networker.request(service, new NetWorkerHandler() {
+            
+            @Override
+            public void progressUpdate(long current, long allLength) {
+                
+            }
+            
+            @Override
+            public void handleData(Response rsp) {
+                if(rsp.getStatus() == 200)
+                {
+                    Toast.makeText(HomeActivity.this, "数据同步成功", Toast.LENGTH_LONG).show();
+                }
+                else
+                {
+                    Toast.makeText(HomeActivity.this, "数据同步失败，请检查网络", Toast.LENGTH_LONG).show();
+                }
+                
+            }
+        });
     }
 
     @Override

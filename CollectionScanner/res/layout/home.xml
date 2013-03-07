@@ -40,6 +40,12 @@
 	    	android:layout_weight="1"
 	    	android:onClick="stat"
 	    	android:text="stat"/>
+        <Button 
+	        android:layout_width="100dp"
+	    	android:layout_height="60dp"
+	    	android:layout_weight="1"
+	    	android:onClick="sync"
+	    	android:text="sync"/>
     </LinearLayout>
     
 </RelativeLayout>
