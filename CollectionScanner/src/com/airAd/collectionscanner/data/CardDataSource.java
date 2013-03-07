@@ -37,17 +37,17 @@ public class CardDataSource {
         return res;
     }
     
-    public List<Card> query(String id)
+    public Card query(String id)
     {
-        List<Card> res = new ArrayList<Card>();
-        SQLiteDatabase db = helper.getReadableDatabase();
+        Card res = null;
+        SQLiteDatabase db = helper.getWritableDatabase();
         Cursor cursor = db.query(Card.TABLE, CAED_QUERY_ARRAY, ID_WHERE, new String[]{id}, null, null, null);
         cursor.moveToFirst();
-        while(!cursor.isAfterLast())
+        if(!cursor.isAfterLast())
         {
-            res.add(generateCard(cursor));
-            cursor.moveToNext();
+            res = generateCard(cursor);
         }
+        cursor.close();
         db.close();
         return res;
     }

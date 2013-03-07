@@ -277,16 +277,11 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         } else {
             beepManager.playBeepSoundAndVibrate();
             drawResultPoints(barcode, rawResult);
-            if (resultHandler.getResult().getType() == ParsedResultType.URI) {
-                String url = resultHandler.getResult().getDisplayResult();
-                Intent data = new Intent();
-                data.putExtra(FLAG, url);
-                if (url.endsWith(".pkpass")) {
-                    setResult(RESULT_OK, data);
-                }
-                finish();
-            } else if (resultHandler.getResult().getType() == ParsedResultType.TEXT) {
+            if (resultHandler.getResult().getType() == ParsedResultType.TEXT) {
                 String t = resultHandler.getResult().getDisplayResult();
+                Intent data = new Intent();
+                data.putExtra(FLAG, t);
+                setResult(RESULT_OK, data);
                 Toast.makeText(CaptureActivity.this, t, Toast.LENGTH_SHORT).show();
                 finish();
             }

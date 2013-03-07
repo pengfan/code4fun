@@ -8,22 +8,38 @@
         android:id="@+id/show_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp">
+        android:padding="30dp">
 
         <TextView 
             android:id="@+id/card_show"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/primary_text_dark"
-            android:textSize="16sp"/>
+            android:textColor="@android:color/black"
+            android:textSize="20sp"/>
+        
+        <ListView 
+            android:id="@+id/stat_show"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"/>
     </RelativeLayout>
     
-    <Button 
-        android:layout_width="100dp"
-    	android:layout_height="60dp"
-    	android:onClick="scan"
-    	android:layout_alignParentBottom="true"
-    	android:layout_centerHorizontal="true"
-    	android:layout_marginBottom="20dp"
-    	android:text="scan"/>
+    <LinearLayout 
+        android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:padding="15dp"
+	    android:layout_alignParentBottom="true">
+        <Button 
+	        android:layout_width="100dp"
+	    	android:layout_height="60dp"
+	    	android:layout_weight="1"
+	    	android:onClick="scan"
+	    	android:text="scan"/>
+        <Button 
+	        android:layout_width="100dp"
+	    	android:layout_height="60dp"
+	    	android:layout_weight="1"
+	    	android:onClick="stat"
+	    	android:text="stat"/>
+    </LinearLayout>
+    
 </RelativeLayout>
