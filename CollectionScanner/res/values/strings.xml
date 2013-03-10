@@ -2,4 +2,8 @@
 <resources>
     <string name="app_name">商家管理端</string>
 
+    <string name="aready_sync">已经同步</string>
+    <string name="not_sync">未同步</string>
+    <string name="syncing">正在同步中...</string>
+    
 </resources>
