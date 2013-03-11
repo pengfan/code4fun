@@ -283,9 +283,14 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
                 data.putExtra(FLAG, t);
                 setResult(RESULT_OK, data);
                 Toast.makeText(CaptureActivity.this, t, Toast.LENGTH_SHORT).show();
-                finish();
+               
+            }
+            else
+            {
+            	Toast.makeText(this, "不是集点卡", Toast.LENGTH_SHORT).show();
             }
         }
+        finish();
     }
 
     /**

@@ -3,11 +3,55 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@android:color/white">
+    <RelativeLayout
+        android:id="@+id/top_layout"
+        android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentTop="true">
+	    
+        <TextView 
+            android:id="@+id/top_show"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:textSize="16sp"/>
+	</RelativeLayout>
+    
+    <LinearLayout 
+        android:id="@+id/buttom_layout"
+        android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentBottom="true">
+        <Button 
+	        android:layout_width="0dp"
+	    	android:layout_height="60dp"
+	    	android:layout_weight="1"
+	    	android:onClick="scan"
+	    	android:background="@drawable/bottom_btn"
+	    	android:text="@string/scan"/>
+        <Button 
+	        android:layout_width="0dp"
+	    	android:layout_height="60dp"
+	    	android:layout_weight="1"
+	    	android:onClick="stat"
+	    	android:background="@drawable/bottom_btn"
+	    	android:text="@string/stat"/>
+        <Button 
+	        android:layout_width="0dp"
+	    	android:layout_height="60dp"
+	    	android:layout_weight="1"
+	    	android:onClick="sync"
+	    	android:background="@drawable/bottom_btn"
+	    	android:text="@string/sync"/>
+    </LinearLayout>
     
     <RelativeLayout 
         android:id="@+id/show_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/top_layout"
+        android:layout_above="@+id/bottom_layout"
         android:padding="30dp">
 
         <TextView 
@@ -23,29 +67,6 @@
             android:layout_height="wrap_content"/>
     </RelativeLayout>
     
-    <LinearLayout 
-        android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:padding="15dp"
-	    android:layout_alignParentBottom="true">
-        <Button 
-	        android:layout_width="100dp"
-	    	android:layout_height="60dp"
-	    	android:layout_weight="1"
-	    	android:onClick="scan"
-	    	android:text="@string/scan"/>
-        <Button 
-	        android:layout_width="100dp"
-	    	android:layout_height="60dp"
-	    	android:layout_weight="1"
-	    	android:onClick="stat"
-	    	android:text="@string/stat"/>
-        <Button 
-	        android:layout_width="100dp"
-	    	android:layout_height="60dp"
-	    	android:layout_weight="1"
-	    	android:onClick="sync"
-	    	android:text="@string/sync"/>
-    </LinearLayout>
+    
     
 </RelativeLayout>
