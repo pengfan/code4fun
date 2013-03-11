@@ -33,19 +33,19 @@
 	    	android:layout_height="60dp"
 	    	android:layout_weight="1"
 	    	android:onClick="scan"
-	    	android:text="scan"/>
+	    	android:text="@string/scan"/>
         <Button 
 	        android:layout_width="100dp"
 	    	android:layout_height="60dp"
 	    	android:layout_weight="1"
 	    	android:onClick="stat"
-	    	android:text="stat"/>
+	    	android:text="@string/stat"/>
         <Button 
 	        android:layout_width="100dp"
 	    	android:layout_height="60dp"
 	    	android:layout_weight="1"
 	    	android:onClick="sync"
-	    	android:text="sync"/>
+	    	android:text="@string/sync"/>
     </LinearLayout>
     
 </RelativeLayout>
