@@ -18,7 +18,7 @@
             android:textSize="16sp"/>
 	</RelativeLayout>
     
-    <LinearLayout 
+    <!--<LinearLayout 
         android:id="@+id/buttom_layout"
         android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
 	    	android:onClick="scan"
 	    	android:background="@drawable/bottom_btn"
 	    	android:text="@string/scan"/>
-        <Button 
+        <Button  
 	        android:layout_width="0dp"
 	    	android:layout_height="60dp"
 	    	android:layout_weight="1"
@@ -46,27 +46,11 @@
 	    	android:text="@string/sync"/>
     </LinearLayout>
     
-    <RelativeLayout 
-        android:id="@+id/show_layout"
+    --><FrameLayout 
+        android:id="@+id/frame_layout"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:layout_below="@+id/top_layout"
-        android:layout_above="@+id/bottom_layout"
-        android:padding="30dp">
+        android:layout_above="@+id/buttom_layout"/>
 
-        <TextView 
-            android:id="@+id/card_show"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:textSize="20sp"/>
-        
-        <ListView 
-            android:id="@+id/stat_show"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"/>
-    </RelativeLayout>
-    
-    
-    
 </RelativeLayout>
