@@ -16,6 +16,7 @@
 
 package com.airAd.collectionscanner.worker;
 
+import java.io.IOException;
 import java.security.KeyStore;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ import java.util.List;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
+import org.apache.http.ParseException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
@@ -40,6 +42,7 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
+import org.apache.http.util.EntityUtils;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -254,12 +257,22 @@ public class NetWorker {
                 if (statusCode == 200 && !isCancelled() && !mExitTasksEarly) {
                     try {
                         service.handleResponse(httpResponse, response);
-                        //LogUtil.w(NetWorker.class, "response:" + EntityUtils.toString(httpResponse.getEntity()));
+                        LogUtil.w(NetWorker.class, "response:" + EntityUtils.toString(httpResponse.getEntity()));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 } else {
                     LogUtil.w(NetWorker.class, "statusCode:" + statusCode);
+                    try {
+                        if(httpResponse != null && httpResponse.getEntity() != null)
+                        {
+                            LogUtil.w(NetWorker.class, "response:" + EntityUtils.toString(httpResponse.getEntity()));
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
@@ -281,7 +294,7 @@ public class NetWorker {
         @Override
         protected void onPostExecute(Response data) {
             // if cancel was called on this task or the "exit early" flag is set then we're done
-            taskList.remove(this);
+            taskList.remove(this);            
             LogUtil.i(NetWorker.class, "remove");
             if (isCancelled() || mExitTasksEarly) {
                 return;

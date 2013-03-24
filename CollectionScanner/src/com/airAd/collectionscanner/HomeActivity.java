@@ -1,20 +1,20 @@
 package com.airAd.collectionscanner;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.airAd.collectionscanner.data.Card;
 import com.airAd.collectionscanner.data.CardDataSource;
+import com.airAd.collectionscanner.fragment.ScanResultFragment;
+import com.airAd.collectionscanner.fragment.StatFragment;
 import com.airAd.collectionscanner.net.Response;
 import com.airAd.collectionscanner.service.CardSynService;
 import com.airAd.collectionscanner.worker.NetWorker;
@@ -22,14 +22,13 @@ import com.airAd.collectionscanner.worker.NetWorkerHandler;
 import com.google.zxing.client.android.CaptureActivity;
 
 public class HomeActivity extends BaseActivity {
-	/** Called when the activity is first created. */
-	private TextView textView;
-	private ListView listView;
+
 	private TextView topShow;
-	private CardDataSource dataSource;
-	private List<Card> cardList = new ArrayList<Card>();
-	private StartAdapter adapter;
 	private NetWorker networker;
+	private CardDataSource dataSource;
+
+	private ScanResultFragment scanResultFragment;
+	private StatFragment statFragment;
 
 	public static final String CARD_SHARED = "card_shared";
 	public static final String SYNC = "sync";
@@ -39,30 +38,69 @@ public class HomeActivity extends BaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.home);
-		networker = new NetWorker(this);
-		textView = findView(R.id.card_show);
-		listView = findView(R.id.stat_show);
-		topShow = findView(R.id.top_show);
-		adapter = new StartAdapter();
-		listView.setAdapter(adapter);
+		
+		scanResultFragment = new ScanResultFragment();
+		statFragment = new StatFragment();
+		
 		dataSource = new CardDataSource(this);
+		networker = new NetWorker(this);
+		topShow = findView(R.id.top_show);
+		
 		changeSynView();
+		init();
+	}
+	
+	public void init()
+	{
+	    changeFragment(scanResultFragment);
+	}
+	
+	private void changeFragment(Fragment fragment)
+	{
+	    Fragment lastFragment = getSupportFragmentManager().findFragmentById(R.id.frame_layout);
+	    if(lastFragment == fragment)
+	        return ;
+	    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+	    if(lastFragment != null)
+	    {
+	        ft.detach(lastFragment);
+	    }
+        if(!fragment.isDetached())
+        {
+            ft.add(R.id.frame_layout, fragment);
+        }
+        else
+        {
+            ft.attach(fragment);
+        }
+	    ft.commit();
 	}
 
 	public void scan(View view) {
-		startActivityForResult(new Intent(this, CaptureActivity.class),
-				SCAN_SEAL);
+	    changeFragment(scanResultFragment);
+		startActivityForResult(new Intent(this, CaptureActivity.class), SCAN_SEAL);
 	}
 
 	public void stat(View view) {
-		cardList = dataSource.query();
-		adapter.notifyDataSetChanged();
-		listView.setVisibility(View.VISIBLE);
-		textView.setVisibility(View.GONE);
-	}
+	    changeFragment(statFragment);
+    }
 
 	public void sync(View view) {
 		sync(false);
+		/*TestService tService = new TestService();
+		tService.setUrl("http://192.168.1.247:8860/passbook/down/1271.pkpass");
+		networker.request(tService, new NetWorkerHandler() {
+            
+            @Override
+            public void progressUpdate(long current, long allLength) {
+                
+            }
+            
+            @Override
+            public void handleData(Response rsp) {
+                
+            }
+        });*/
 	}
 	
 	private void sync(final boolean isBackground)
@@ -93,16 +131,14 @@ public class HomeActivity extends BaseActivity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == SCAN_SEAL) {
 			if (resultCode == RESULT_OK) {
-				listView.setVisibility(View.GONE);
-				textView.setVisibility(View.VISIBLE);
 				String id = data.getStringExtra(CaptureActivity.FLAG);
 				Card card = dataSource.query(id);
 				if (card == null) {
 					dataSource.insert(id, 1);
-					textView.setText("该用户首次使用\n累计使用点数 1");
+					scanResultFragment.setResult("该用户首次使用\n累计使用点数 1");
 				} else {
 					dataSource.update(id, card.getAmount() + 1);
-					textView.setText("该用户累计使用点数" + (card.getAmount() + 1));
+					scanResultFragment.setResult("该用户累计使用点数" + (card.getAmount() + 1));
 				}
 				// 每次修改完后会同步一遍
 				sync(false);
@@ -131,36 +167,6 @@ public class HomeActivity extends BaseActivity {
 		}
 	}
 
-	private class StartAdapter extends BaseAdapter {
-
-		@Override
-		public int getCount() {
-			return cardList.size();
-		}
-
-		@Override
-		public Object getItem(int position) {
-			return null;
-		}
-
-		@Override
-		public long getItemId(int position) {
-			return 0;
-		}
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			if (convertView == null) {
-				convertView = getLayoutInflater().inflate(R.layout.start_item,
-						null);
-			}
-			((TextView) convertView.findViewById(R.id.index)).setText("序号:"
-					+ position);
-			((TextView) convertView.findViewById(R.id.count)).setText("消费次数:"
-					+ cardList.get(position).getAmount());
-			return convertView;
-		}
-
-	}
+	
 
 }
