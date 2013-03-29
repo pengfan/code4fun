@@ -9,8 +9,9 @@ import android.content.Context;
  */
 public class Config {
 
-    public static final String host = "http://192.168.1.247:8860"; 
-   
+    //public static final String host = "http://192.168.1.247:8860"; 
+    public static final String host = "http://192.168.1.204:9090";
+    
     private static Config instance;
         
     private void Config()
