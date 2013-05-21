@@ -2,11 +2,14 @@ package com.airAd.collectionscanner;
 
 import java.util.List;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,7 +48,9 @@ public class HomeActivity extends BaseActivity {
 		dataSource = new CardDataSource(this);
 		networker = new NetWorker(this);
 		topShow = findView(R.id.top_show);
-		
+		TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+		String deviceId = telephonyManager.getDeviceId();
+		Log.i("deviceId", deviceId);
 		changeSynView();
 		init();
 	}
@@ -166,7 +171,5 @@ public class HomeActivity extends BaseActivity {
 			topShow.setTextColor(Color.RED);
 		}
 	}
-
-	
 
 }
